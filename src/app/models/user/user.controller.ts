@@ -1,5 +1,7 @@
+import  httpStatus  from 'http-status';
 import { Request, Response } from "express"
 import { UserService } from "./user.services";
+import userRespones from '../../utility/userRespones';
 
 
 
@@ -10,7 +12,7 @@ const createUserController=async(req:Request,res:Response)=>{
     const {password,student}=req.body;
   
     const result=await UserService.createStudent(password,student);
-    res.status(200).send({success:true,message:'Student User Create SUccessfully',data:result})
+    userRespones(res,{statusCode:httpStatus.OK,success:true,message:'Successfuly find Specific Student',data:result})
 
    }
    catch(error){
