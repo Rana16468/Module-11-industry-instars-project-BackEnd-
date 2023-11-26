@@ -2,6 +2,9 @@ import  mongoose  from 'mongoose';
 import app from './app';
 import config from './app/config';
 
+//username: ph-university
+//password: 03jeL0DfYssJP658
+
 
 
 async function main() {
@@ -17,7 +20,5 @@ async function main() {
       }
     
     }
-    main().then(()=>{}).catch((error)=>{
-        console.log(error);
-    })
+    main();
     
