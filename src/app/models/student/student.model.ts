@@ -54,7 +54,7 @@ const TFullNameSchema= new Schema<TUserName>({
     lastName:{type:'String',required:[true,'Last Name is Required']}
 })
  const TStudentSchema= new Schema<TStudent,StudentModel>({
-    id:{type:'String',required:[true,'Id is Required'],unique:true},
+
     // ref: refrancing the model 
     user:{type:Schema.Types.ObjectId,required:[true,'User Id is Required'],unique:true,ref:'USER'},
     name:{type:TFullNameSchema,required:[true,'Name is Required']},
@@ -74,6 +74,9 @@ const TFullNameSchema= new Schema<TUserName>({
      profileImg:{type:String,required:[true,'Profile Image is Required']},
      guardian:{type:guardianSchema,required:[true,'Guardian is Required']},
      localGuardian:{type:localGuradianSchema,required:[true,'Local Guardian is Required']},
+     admissionSemester:{type:Schema.Types.ObjectId,
+      ref:'AcademicSemester',
+      required:[true,'Addmission Semester ID Is Required']},
      isDeleted:{type:Boolean,required:[false,'Is Deleted is Optional But Important']}
 
  });

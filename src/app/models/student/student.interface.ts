@@ -24,7 +24,6 @@ export type TLocalGuardian = {
 };
 
 export type TStudent = {
-  id: string;
   user:Types.ObjectId;
   name: TUserName;
   gender: 'male' | 'female' | 'other';
@@ -38,7 +37,8 @@ export type TStudent = {
   guardian: TGuardian;
   localGuardian: TLocalGuardian;
   profileImg?: string;
-  isDeleted?:boolean
+  admissionSemester:Types.ObjectId;
+  isDeleted?:boolean;
 };
 
 export  interface StudentModel extends Model<TStudent>{

@@ -3,25 +3,39 @@ import config from "../../config";
 import { Student } from "../student/student.model";
 import { TUser } from "./user.interface"
 import { USER } from "./user.model";
+import { AcademicSemester } from '../academicSemester/academicSemester.model';
+import { generateUserId } from './user.utilts';
 
 
-const createStudent= async(password:string,StudentData:TStudent)=>{
 
+
+const createStudent= async(password:string,payload:TStudent)=>{
+
+    
+
+   /// const admissionSemester=await AcademicSemester.findById(payload.admissionSemester);
+ 
+     const admissionSemester=await AcademicSemester.isFindByID(payload.admissionSemester)
 
     const userData:Partial<TUser>={};
     userData.password=password || (config.default_password);
     userData.role='user';
-    userData.id='193-16-463'
+
+    //generate User ID 
+
+    userData.id= await generateUserId(admissionSemester);
+
+
 
     const bulintingUser= new USER(userData);
     const newUser=await bulintingUser.save();
     if(Object.keys(newUser).length)
     {
-        StudentData.id=newUser.id;
-        StudentData.user=newUser._id;
+      
+        payload.user=newUser._id;
 
         // create Student 
-        const newStudent= new Student(StudentData);
+        const newStudent= new Student(payload);
         const result=await newStudent.save();
         return result;
 

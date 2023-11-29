@@ -1,5 +1,6 @@
 
 
+
 export type TUser={
     id:string;
     role:'user' | 'admin' | 'faculty';
@@ -8,4 +9,6 @@ export type TUser={
     status:'is-Progress' | 'Blocked',
     isDeleted:boolean
 
+    
 }
+

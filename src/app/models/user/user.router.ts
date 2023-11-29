@@ -1,7 +1,9 @@
 import express from 'express';
 import { UserController } from './user.controller';
 
-const router=express.Router();
+import { TSudentZodValidion } from '../student/student.zod.validation';
+import validationRequest from '../../middlewere/validationRequest';
 
-router.post('/create-student',UserController.createUserController);
+const router=express.Router();
+router.post('/create-student', validationRequest(TSudentZodValidion.TStudentValidaionSchema),UserController.createUserController);
 export const UserRouter=router;

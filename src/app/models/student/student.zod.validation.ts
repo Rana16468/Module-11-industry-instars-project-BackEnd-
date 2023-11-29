@@ -9,7 +9,7 @@ const TFullNameSchema = z.object({
 
 // Zod validation schema for TGuardian
 const TGuardianSchema = z.object({
-  fatherName: z.string({invalid_type_error:'sohel Rana '}).min(1).max(50),
+  fatherName: z.string({invalid_type_error:'Father Name error'}).min(1).max(50),
   fatherOccupation: z.string().min(1),
   fatherContactNo: z.string().min(1),
   motherName: z.string().min(1),
@@ -27,7 +27,9 @@ const TLocalGuardianSchema = z.object({
 
 // Zod validation schema for TStudent
 const TStudentValidaionSchema = z.object({
-  id: z.string(),
+  body:z.object({
+  password:z.string().min(6).max(20),
+  student:z.object({
   name: TFullNameSchema,
   gender: z.enum(['male', 'female', 'other']),
   dateOfBirth: z.string().optional(),
@@ -40,7 +42,10 @@ const TStudentValidaionSchema = z.object({
   profileImg: z.string().url(),
   guardian: TGuardianSchema,
   localGuardian: TLocalGuardianSchema,
+  admissionSemester:z.string(),
   isDeleted: z.boolean().optional(),
+   })
+  })
 });
 
 export const TSudentZodValidion={
