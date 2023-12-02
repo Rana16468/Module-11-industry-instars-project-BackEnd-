@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { StudentModel, TGuardian, TLocalGuardian, TStudent, TUserName } from "./student.interface";
+import { TGuardian, TLocalGuardian, TStudent, TUserName } from "./student.interface";
 
 const guardianSchema = new Schema<TGuardian>({
     fatherName: {
@@ -53,9 +53,10 @@ const TFullNameSchema= new Schema<TUserName>({
     middleName:{type:'String',required:[false,'Middle Name is Required']},
     lastName:{type:'String',required:[true,'Last Name is Required']}
 })
- const TStudentSchema= new Schema<TStudent,StudentModel>({
+ const TStudentSchema= new Schema<TStudent>({
 
     // ref: refrancing the model 
+    id:{type:String,required:[true,'ID is Required'],unique:true},
     user:{type:Schema.Types.ObjectId,required:[true,'User Id is Required'],unique:true,ref:'USER'},
     name:{type:TFullNameSchema,required:[true,'Name is Required']},
     gender:{type:String,enum:{
@@ -77,22 +78,15 @@ const TFullNameSchema= new Schema<TUserName>({
      admissionSemester:{type:Schema.Types.ObjectId,
       ref:'AcademicSemester',
       required:[true,'Addmission Semester ID Is Required']},
-     isDeleted:{type:Boolean,required:[false,'Is Deleted is Optional But Important']}
+      academicDepartment:{type:Schema.Types.ObjectId,
+        required:[true,'Academic Department is Required'],
+        ref:'AcademicDepartment'
+      },
+     isDeleted:{type:Boolean,required:[false,'Is Deleted is Optional But Important'],default:false}
 
  });
 
- // static method 
 
-
- TStudentSchema.statics.isUserExists=async function(id:string){
-
-
-  const existingUser=await Student.findOne({id});
-
-  return existingUser;
-
-
- }
 
  // student model 
- export const Student=model<TStudent,StudentModel>('student',TStudentSchema);
+ export const Student=model<TStudent>('student',TStudentSchema);

@@ -47,7 +47,9 @@ const  TAcademicSemesterSchema= new  Schema<TAcademicSemester, AcademicSemesterM
 // static method 
 TAcademicSemesterSchema.statics.isFindByID= async function(admissionSemester:Schema.Types.ObjectId){
 
+    
     const findByID=await AcademicSemester.findById(admissionSemester);
+   
     return findByID
 
 
@@ -67,5 +69,5 @@ TAcademicSemesterSchema.pre('save', async function(next){
     next()
 })
 
-export const  AcademicSemester=model<TAcademicSemester,AcademicSemesterModule>('academicSemester',TAcademicSemesterSchema);
+export const  AcademicSemester=model<TAcademicSemester,AcademicSemesterModule>('AcademicSemester',TAcademicSemesterSchema);
 

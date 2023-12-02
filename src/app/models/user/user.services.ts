@@ -5,6 +5,9 @@ import { TUser } from "./user.interface"
 import { USER } from "./user.model";
 import { AcademicSemester } from '../academicSemester/academicSemester.model';
 import { generateUserId } from './user.utilts';
+import mongoose from 'mongoose';
+import AppError from '../../AppError/AppError';
+import httpStatus from 'http-status';
 
 
 
@@ -16,6 +19,7 @@ const createStudent= async(password:string,payload:TStudent)=>{
    /// const admissionSemester=await AcademicSemester.findById(payload.admissionSemester);
  
      const admissionSemester=await AcademicSemester.isFindByID(payload.admissionSemester)
+     
 
     const userData:Partial<TUser>={};
     userData.password=password || (config.default_password);
@@ -23,25 +27,46 @@ const createStudent= async(password:string,payload:TStudent)=>{
 
     //generate User ID 
 
+    // serat in Rollback and transaction
+    const session= await mongoose.startSession();
+   try{
+
+    session.startTransaction();
     userData.id= await generateUserId(admissionSemester);
 
 
 
-    const bulintingUser= new USER(userData);
-    const newUser=await bulintingUser.save();
-    if(Object.keys(newUser).length)
+    
+    const newUser=await USER.create([userData],{session})
+    if(!newUser.length)
     {
       
-        payload.user=newUser._id;
-
-        // create Student 
-        const newStudent= new Student(payload);
-        const result=await newStudent.save();
-        return result;
+       throw new AppError(httpStatus.BAD_REQUEST,'User Not Create','');
 
 
     }
+    payload.user=newUser[0]._id;
+    payload.id=newUser[0].id;
 
+    // create Student 
+    const newStudent=await Student.create([payload],{session});
+    if(!newStudent.length)
+    {
+        throw new AppError(httpStatus.BAD_REQUEST,'Student NOT Create Successfully','');
+    }
+    await session.commitTransaction();
+    await session.endSession();
+    return newStudent;
+
+
+   }
+   catch(error)
+   {
+    await session.abortTransaction();
+    await session.endSession();
+    
+
+   }
 
 
 

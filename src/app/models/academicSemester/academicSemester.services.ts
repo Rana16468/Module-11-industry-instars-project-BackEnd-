@@ -14,7 +14,29 @@ const createAcademicSemesterIntoDb=async(payload:TAcademicSemester)=>{
     const result=await builtingAcademicSemester.save();
     return result;
 }
+const getAllAcademicSemesterIntoDb=async()=>{
+
+  const result=await AcademicSemester.find();
+  return result;
+}
+
+const getSingleAcademicSemesterIntoDb=async(_id:string)=>{
+
+  const result=await AcademicSemester.findOne({_id});
+  return result;
+}
+
+const updateAcademicSemesterIntoDb=async(_id:string,payload:TAcademicSemester)=>{
+
+  const result=await AcademicSemester.findOneAndUpdate({_id},payload,{upsert:true});
+  return result;
+}
+
+
 
 export const AcademicSemesterService={
-    createAcademicSemesterIntoDb
+    createAcademicSemesterIntoDb,
+  getAllAcademicSemesterIntoDb,
+  getSingleAcademicSemesterIntoDb,
+  updateAcademicSemesterIntoDb
 }
