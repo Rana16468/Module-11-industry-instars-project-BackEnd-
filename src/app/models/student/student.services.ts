@@ -7,8 +7,17 @@ import { TStudent } from "./student.interface";
 
 
 
+
 //find All Student 
 const findAllStudent=async(query:Record<string,unknown>)=>{
+
+  /*const fieldSeraching=['email','name.firstName','permanentAddress'];
+  const searchingQuery= new QueryBuilder(Student.find(),query);
+  searchingQuery.search(fieldSeraching).filter().sort().pagination().fields();
+  const result=await searchingQuery.modelQuery;
+  return result;*/
+
+  
 
   let searchTerm='';
   if(query?.searchTerm)
@@ -52,18 +61,6 @@ if(query?.fields)
 
 }
   
-  
-
-
-
-  
-// format  in searchimh 
-//{email:{$regex:searchTerm,$option:'i}}
-// field searching --->
-/*.populate({
-        path:'academicDepartment',
-        populate:'academicFaculty'
-    }).populate('admissionSemester'); */
 const searchQuery=Student.find({$or:fieldSeraching.map((field)=>({[field]:{$regex:searchTerm,$options:'i'}}))})
 const filterQuery=searchQuery.find(queryObject).populate({
   path:'academicDepartment',
@@ -75,6 +72,9 @@ const limitQuery=paginationQuery.limit(limit);
 // field filtering
 const fieldFiltering=await limitQuery.select(fields);
 return  fieldFiltering
+
+
+
 }
 
 // find specific user
