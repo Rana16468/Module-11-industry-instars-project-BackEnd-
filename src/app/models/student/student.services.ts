@@ -8,15 +8,73 @@ import { TStudent } from "./student.interface";
 
 
 //find All Student 
-const findAllStudent=async()=>{
+const findAllStudent=async(query:Record<string,unknown>)=>{
+
+  let searchTerm='';
+  if(query?.searchTerm)
+  {
+    searchTerm=query?.searchTerm as string
+  }
+  const fieldSeraching=['email','name.firstName','permanentAddress'];
+  const queryObject={...query};
+  const excludeField=['searchTerm','sort','limit','page','fields']
+  excludeField.forEach((field)=>delete queryObject[field]);
+  //sorting 
+  let sort='-createdAt'
+  if(query?.sort)
+  {
+   
+    sort=query?.sort as string;
+  }
+
+  
+
+  //limit 
+let limit=0;
+let page=0;
+let skip=0;
+if(query?.limit)
+{
+  limit=Number(query?.limit);
+  
+}
+if(query?.page)
+{
+  page=Number(query?.page);
+  skip=(page -1)*limit;
+}
+
+// field filtering 
+let fields='-__v';
+if(query?.fields)
+{
+  fields=(query?.fields as string).split(',').join(' ');
+
+}
+  
+  
 
 
-    const result=await Student.find().populate({
+
+  
+// format  in searchimh 
+//{email:{$regex:searchTerm,$option:'i}}
+// field searching --->
+/*.populate({
         path:'academicDepartment',
         populate:'academicFaculty'
-    }).populate('admissionSemester');
-    return result;
-
+    }).populate('admissionSemester'); */
+const searchQuery=Student.find({$or:fieldSeraching.map((field)=>({[field]:{$regex:searchTerm,$options:'i'}}))})
+const filterQuery=searchQuery.find(queryObject).populate({
+  path:'academicDepartment',
+  populate:'academicFaculty'
+}).populate('admissionSemester');
+const sortQuery=filterQuery.sort(sort);
+const paginationQuery=sortQuery.skip(skip);
+const limitQuery=paginationQuery.limit(limit);
+// field filtering
+const fieldFiltering=await limitQuery.select(fields);
+return  fieldFiltering
 }
 
 // find specific user
