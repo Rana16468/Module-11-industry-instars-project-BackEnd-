@@ -9,6 +9,7 @@ const router=express.Router();
 
 router.get('/All-Faculty',FacultyController.getAllFaculty);
 router.get('/single-Faculty/:id',FacultyController.getSingleFaculty);
+router.delete('/delete-faculty/:id',FacultyController.deleteFaculty);
 router.patch('/update-faculty/:facultyId', validationRequest(FacultyValidation.updateFacultyValidationSchema),FacultyController.updateFaculty);
 
 

@@ -21,11 +21,11 @@ const TFacultyGuirdianSchema = z.object({
 const createTFacultySchema = z.object({
   body:z.object({
     faculty:z.object({
-        id: z.string(),
         name: TFacultyNameSchema,
         designation: z.string().min(1),
         gmail:z.string(),
         gender: z.enum(['Male', 'Female']),
+        bloogGroup:z.enum(['A+' , 'A-' , 'B+' , 'B-' , 'AB+' , 'AB-' , 'O+' , 'O-']),
         dateOfBirth: z.string().min(1),
         contractNo: z.string().min(1),
         emergencyContractNo: z.string().min(1),
@@ -59,11 +59,12 @@ const updateTFacultyNameSchema = z.object({
 const updateFacultyValidationSchema=z.object({
     body:z.object({
       faculty:z.object({
-          id: z.string().optional(),
+        
           name: updateTFacultyNameSchema,
           designation: z.string().min(1).optional(),
           gmail:z.string().optional(),
           gender: z.enum(['Male', 'Female']).optional(),
+          bloogGroup:z.enum(['A+' , 'A-' , 'B+' , 'B-' , 'AB+' , 'AB-' , 'O+' , 'O-']).optional(),
           dateOfBirth: z.string().min(1).optional(),
           contractNo: z.string().min(1).optional(),
           emergencyContractNo: z.string().min(1).optional(),

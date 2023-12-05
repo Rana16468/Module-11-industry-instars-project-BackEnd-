@@ -22,6 +22,13 @@ const getSingleFaculty=catchAsyc(async(req:Request,res:Response)=>{
     userRespones(res,{statusCode:httpStatus.OK,success:true,message:'Successfully Find the Single Faculty',data:result})
 });
 
+const deleteFaculty=catchAsyc(async(req:Request,res:Response)=>{
+    const {id}=req.params;
+    const result=await FacultyService.deleteFacultyIntoDb(id);
+    userRespones(res,{statusCode:httpStatus.OK,success:true,message:'Faculty User  And Faculty Information Successfully deleted',data:result});
+
+});
+
 const updateFaculty=catchAsyc(async(req:Request,res:Response)=>{
 
     const {facultyId}=req.params;
@@ -35,5 +42,6 @@ const updateFaculty=catchAsyc(async(req:Request,res:Response)=>{
 export const FacultyController={
     getAllFaculty,
     getSingleFaculty,
+    deleteFaculty,
     updateFaculty
 }

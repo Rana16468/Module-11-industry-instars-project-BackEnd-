@@ -22,6 +22,7 @@ export type TFaculty={
     designation:string;
     gmail:string;
     gender:'Male' | 'Female',
+    bloogGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
     dateOfBirth:string;
     contractNo:string;
     emergencyContractNo:string;

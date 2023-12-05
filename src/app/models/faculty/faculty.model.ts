@@ -25,6 +25,7 @@ const TFacultySchema= new Schema<TFaculty>({
     gmail:{type:String,required:[true,'Gamil is Required']},
     designation:{type:String,required:[true,'Designation is Required']},
     gender:{type:String,enum:{values:['Male', 'Female'],message:'{VALUE} is Not Required'},required:[true,'Gender is Required']},
+    bloogGroup:{type:String,enum:{values:['A+' , 'A-' , 'B+' , 'B-' , 'AB+' , 'AB-' , 'O+' , 'O-'],message:'{VALUE} is Not Required'},required:[true,'BloodGroup is Required']},
     dateOfBirth:{type:String,required:[true,'Date Of Birth is Required']},
     contractNo:{type:String,required:[true,'Contract Number is Required']},
     emergencyContractNo:{type:String,required:[true,'Emergency Contract Number is Required']},
@@ -35,6 +36,28 @@ const TFacultySchema= new Schema<TFaculty>({
     profileImg:{type:String,required:[true,'Profile Image is Required']},
     isDeleted:{type:Boolean,required:[false,'is Deleted is Required'],default:false}
 
+},{
+    timestamps:true
 });
+
+// mongoose middlewere 
+
+TFacultySchema.pre('find',async function(next){
+
+    this.find({isDeleted:{$ne:true}});
+
+    next();
+});
+TFacultySchema.pre('aggregate',async function(next){
+
+      this.pipeline().unshift({$match:{isDeleted:{$ne:true}}});
+
+    next();
+})
+TFacultySchema.pre('findOne',async function(next){
+    this.findOne({isDeleted:{$ne:true}});
+
+    next();
+})
 
 export const Faculty= model<TFaculty>('Faculty',TFacultySchema);
