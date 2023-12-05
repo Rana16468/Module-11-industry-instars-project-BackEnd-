@@ -4,13 +4,56 @@ import { Student } from "../student/student.model";
 import { TUser } from "./user.interface"
 import { USER } from "./user.model";
 import { AcademicSemester } from '../academicSemester/academicSemester.model';
-import { generateUserId } from './user.utilts';
+import { generateFaultyId, generateUserId } from './user.utilts';
 import mongoose from 'mongoose';
 import AppError from '../../AppError/AppError';
 import httpStatus from 'http-status';
+import { TFaculty } from '../faculty/faculty.interface';
+import { Faculty } from '../faculty/faculty.model';
 
 
 
+
+const createFacultyIntoDb=async(password:string,payload:TFaculty)=>{
+
+   
+
+    const userData:Partial<TUser>={};
+    userData.password=password || (config.default_password);
+    userData.role='faculty';
+    const session=await mongoose.startSession();
+    try{
+        session.startTransaction();
+
+        // generateFacultyId
+        userData.id=await generateFaultyId();
+        const newFacultyUser=await USER.create([userData],{session});
+        if(!newFacultyUser.length)
+        {
+            throw new AppError(httpStatus.BAD_REQUEST,'Faculty User createing Fuction Failed','');
+        }
+        payload.user=newFacultyUser[0]._id;
+        payload.id=newFacultyUser[0].id;
+        const newFaculty=await Faculty.create([payload],{session});
+        if(!newFaculty.length){
+            throw new AppError(httpStatus.BAD_REQUEST,'Faculty Careting Function Failed','');
+        }
+        await session.commitTransaction();
+        await session.endSession();
+        return newFaculty;
+
+
+
+    }
+    catch(err)
+    {
+        await session.abortTransaction();
+        await session.endSession();
+    }
+
+
+
+}
 
 const createStudent= async(password:string,payload:TStudent)=>{
 
@@ -74,5 +117,6 @@ const createStudent= async(password:string,payload:TStudent)=>{
 }
 
 export const UserService={
-    createStudent
+    createStudent,
+    createFacultyIntoDb
 }

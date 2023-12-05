@@ -11,9 +11,17 @@ const createUserController=catchAsyc(async(req:Request,res:Response)=>{
      const {password,student}=req.body;
    
      const result=await UserService.createStudent(password,student);
-     userRespones(res,{statusCode:httpStatus.OK,success:true,message:'Successfuly find Specific Student',data:result})
+     userRespones(res,{statusCode:httpStatus.OK,success:true,message:'Successfuly Created Student',data:result})
  
+ });
+ const createFacultyController=catchAsyc(async(req:Request,res:Response)=>{
+
+
+    const {password,faculty}=req.body;
+    const result=await UserService.createFacultyIntoDb(password,faculty);
+    userRespones(res,{statusCode:httpStatus.OK,success:true,message:'Successfuly  Created Faculty',data:result})
  })
 export const UserController={
-    createUserController
+    createUserController,
+    createFacultyController
 }

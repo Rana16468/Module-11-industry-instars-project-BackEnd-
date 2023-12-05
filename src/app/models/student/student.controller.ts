@@ -12,7 +12,7 @@ import catchAsyc from "../../utility/catchAsync";
 const findAllStudentController= catchAsyc(async(req:Request,res:Response)=>{
 
 const data=req.query;
-console.log(data);
+
    const result=await StudentService.findAllStudent(data);
    userRespones(res,{statusCode:httpStatus.OK,success:true,message:'Successfuly find Specific Student',data:result})
   
