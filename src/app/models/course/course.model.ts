@@ -61,5 +61,27 @@ const TCourseFacultySchema= new Schema<TCourseFaculty>({
     ]}
 
 });
+
+// middlewere in mongoose
+TCourseSchema.pre('find',function(next){
+    this.find({isDeleted:{$ne:true}})
+
+next();
+});
+TCourseSchema.pre('findOne',function(next){
+    this.findOne({isDeleted:{$ne:true}})
+
+    next();
+});
+
+TCourseSchema.pre('aggregate',function(next){
+    this.pipeline().unshift({$match:{isDeleted:{$ne:true}}})
+    next();
+});
+
+// update middlewere 
+
+
+
 export const CourseFaculty=model<TCourseFaculty>('CourseFaculty',TCourseFacultySchema);
 export const Course=model<TCourse>('Course',TCourseSchema);

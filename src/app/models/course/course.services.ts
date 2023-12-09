@@ -21,7 +21,7 @@ const getAllCourseIntoDb=async()=>{
 
 const getSingleCourseIntoDb=async(id:string)=>{
 
-    const result=await Course.findById(id);
+    const result=await Course.findById(id).populate('preRequisiteCourses.course');;
     return result;
 }
 const deleteCourseIntoDb=async(id:string)=>{
