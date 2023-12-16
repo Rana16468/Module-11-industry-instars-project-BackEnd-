@@ -9,4 +9,5 @@ router.post('/',validationRequest(SemesterRegistrationValidation.createTSemester
 router.get('/',SemesterRegistrationController.getAllSemesterRegistration);
 router.get('/:id',SemesterRegistrationController.getSingleSemesterRegistration);
 router.patch('/:id',validationRequest(SemesterRegistrationValidation.updateTSemesterRegistrationValidationSchema),SemesterRegistrationController.updateSemesterRegistration);
+router.delete('/:id',SemesterRegistrationController.deleteSemesterRegistration);
 export const SemesterRegistrationRouter=router;

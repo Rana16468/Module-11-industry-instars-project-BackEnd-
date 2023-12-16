@@ -1,4 +1,4 @@
-import { OfferedCourseRouter } from './../models/OfferedCourse/offeredCourse.router';
+
 import express from 'express';
 import { StudentRouter } from '../models/student/student.router';
 import { UserRouter } from '../models/user/user.router';
@@ -8,6 +8,7 @@ import { AcademicDepartmentRoute } from '../models/academicDepartment/academicDe
 import { FacultyRouter } from '../models/faculty/faculty.router';
 import { CourseRouter } from '../models/course/course.router';
 import { SemesterRegistrationRouter } from '../models/semesterRegistration/semesterRegistration.router';
+import { OfferedCourseRouter } from '../models/OfferedCourse/offeredCourse.router';
 
 
 const router=express.Router();
