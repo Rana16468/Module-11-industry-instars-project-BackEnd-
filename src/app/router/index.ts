@@ -1,3 +1,4 @@
+import { OfferedCourseRouter } from './../models/OfferedCourse/offeredCourse.router';
 import express from 'express';
 import { StudentRouter } from '../models/student/student.router';
 import { UserRouter } from '../models/user/user.router';
@@ -6,6 +7,8 @@ import { AcademicFacultyRouter } from '../models/academicFaculty/academicFaculty
 import { AcademicDepartmentRoute } from '../models/academicDepartment/academicDepartment.router';
 import { FacultyRouter } from '../models/faculty/faculty.router';
 import { CourseRouter } from '../models/course/course.router';
+import { SemesterRegistrationRouter } from '../models/semesterRegistration/semesterRegistration.router';
+
 
 const router=express.Router();
 
@@ -17,7 +20,9 @@ const moduleRouth=[
     {path:'/AcademicFaculty',route:AcademicFacultyRouter},
     {path:'/AcademicDepartment',route:AcademicDepartmentRoute},
     {path:'/Faculty',route:FacultyRouter},
-    {path:'/course',route:CourseRouter}
+    {path:'/course',route:CourseRouter},
+    {path:'/semester-registration',route: SemesterRegistrationRouter},
+    {path:'/offered-course',route:OfferedCourseRouter}
 ]
 
 moduleRouth.forEach((v)=>router.use(v.path,v.route))
