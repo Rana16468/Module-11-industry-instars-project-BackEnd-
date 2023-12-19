@@ -9,6 +9,8 @@ import { FacultyRouter } from '../models/faculty/faculty.router';
 import { CourseRouter } from '../models/course/course.router';
 import { SemesterRegistrationRouter } from '../models/semesterRegistration/semesterRegistration.router';
 import { OfferedCourseRouter } from '../models/OfferedCourse/offeredCourse.router';
+import { AdminRouter } from '../models/admin/admin.router';
+import { AuthRouter } from '../models/auth/auth.router';
 
 
 const router=express.Router();
@@ -21,9 +23,11 @@ const moduleRouth=[
     {path:'/AcademicFaculty',route:AcademicFacultyRouter},
     {path:'/AcademicDepartment',route:AcademicDepartmentRoute},
     {path:'/Faculty',route:FacultyRouter},
+    {path:'/admin',route:AdminRouter},
     {path:'/course',route:CourseRouter},
     {path:'/semester-registration',route: SemesterRegistrationRouter},
-    {path:'/offered-course',route:OfferedCourseRouter}
+    {path:'/offered-course',route:OfferedCourseRouter},
+    {path:'/auth',route:AuthRouter}
 ]
 
 moduleRouth.forEach((v)=>router.use(v.path,v.route))

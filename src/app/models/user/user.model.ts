@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { TUser } from "./user.interface";
+import { TUser, UserModel } from "./user.interface";
 import bcrypt  from 'bcrypt';
 import config from "../../config";
 
@@ -7,10 +7,11 @@ import config from "../../config";
 
 
 
-const TUserSchema=new Schema<TUser>({
+const TUserSchema=new Schema<TUser,UserModel>({
     id:{type:String,required:[true,'User ID is Required'],unique:true},
     password:{type:String,required:[true,'Password is Required']},
     needPasswordChange:{type:Boolean,required:[true,'Need Password Change is Required'],default:true},
+    passwordChangedAt:{type:Date,required:[false,'Password Chnage At is Required']},
     role:{
         type:String,
         enum:{
@@ -53,5 +54,28 @@ TUserSchema.pre('save',async function(next){
 
 
 });
+//post save middleware hook
+TUserSchema.post('save',function(doc,next){
+    doc.password='';
+    // after the save the password is empy becouse of security issues
+    next();
+  });
 
-export const USER=model<TUser>('user',TUserSchema);
+
+TUserSchema.statics.isUserExistByCustomId=async function(id:string)
+{
+    return await USER.findOne({id});
+}
+TUserSchema.statics.isPasswordMatched=async function(plainTextPassword:string,hashPassword:string)
+{
+
+    const password =await bcrypt.compare(plainTextPassword,hashPassword);
+    return password;
+}
+TUserSchema.statics.isJWTIssuesBeforePasswordChange=async function(passwordChangeTimestamp:Date,jwtIssuesTime:number){
+    const passwordChangeTime= new Date(passwordChangeTimestamp).getTime()/1000
+    return passwordChangeTime>jwtIssuesTime
+
+}
+
+export const USER=model<TUser,UserModel>('user',TUserSchema);
