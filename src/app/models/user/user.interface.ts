@@ -7,6 +7,7 @@ export type TUser={
     id:string;
     role:'user' | 'admin' | 'faculty';
     password:string;
+    email:string,
     needPasswordChange:boolean;
     passwordChangedAt?:Date
     status:'is-Progress' | 'Blocked',

@@ -13,7 +13,7 @@ export type TAdmin={
     user:Types.ObjectId;
     name:TAdminUserName;
     designation:string;
-    gmail:string;
+    email:string;
     gender:TGender
     bloogGroup?: TBloodGroup;
     dateOfBirth:string;

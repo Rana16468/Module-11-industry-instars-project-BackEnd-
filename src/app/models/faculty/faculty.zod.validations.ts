@@ -23,7 +23,7 @@ const createTFacultySchema = z.object({
     faculty:z.object({
         name: TFacultyNameSchema,
         designation: z.string().min(1),
-        gmail:z.string(),
+        email:z.string(),
         gender: z.enum(['Male', 'Female']),
         bloogGroup:z.enum(['A+' , 'A-' , 'B+' , 'B-' , 'AB+' , 'AB-' , 'O+' , 'O-']),
         dateOfBirth: z.string().min(1),

@@ -39,9 +39,25 @@ const refreshToken:RequestHandler=catchAsyc(async(req,res)=>{
  
  });
 
+ // ph-8 
+ const  forgetPassword:RequestHandler=catchAsyc(async(req,res)=>{
+
+  const userId=req.body.id;
+  const result=await AuthService.forgetPassword(userId);
+  userRespones(res,{success:true,statusCode:httpStatus.OK,message:"Reset Link Generated  Successfully",data:result})
+
+ });
+ const resetPassword:RequestHandler=catchAsyc(async(req,res)=>{
+  const token=req?.headers?.authorization as string;
+   const result=await AuthService.resetPassword(req.body,token);
+   userRespones(res,{success:true,statusCode:httpStatus.OK,message:'Reset Password  Successfully',data:result})
+});
+
 export const AuthController={
     loginUser,
     changePassword,
-    refreshToken
+    refreshToken,
+    forgetPassword,
+    resetPassword
 
 }

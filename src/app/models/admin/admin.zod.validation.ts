@@ -18,7 +18,7 @@ const createTAdminSchema = z.object({
       user: z.string().optional(),
       name: TUserNameSchema,
       designation: z.string().min(1).optional(),
-      gmail: z.string().email().optional(),
+      email: z.string().email().optional(),
       gender: z.enum(["Male", "Female"]).optional(),
       bloogGroup: z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]).optional(),
       dateOfBirth: z.string().min(1).optional(),

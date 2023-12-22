@@ -10,7 +10,7 @@ import httpStatus from "http-status";
 const getAllFaculty=catchAsyc(async(req:Request,res:Response)=>{
 
     
-    console.log(req.cookies)
+    //console.log(req.cookies)
     const result=await FacultyService.getAllFacultyIntoDb();
     userRespones(res,{statusCode:httpStatus.OK,success:true,message:'Successfully Find the All Faculty',data:result})
 

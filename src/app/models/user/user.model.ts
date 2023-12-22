@@ -10,6 +10,12 @@ import config from "../../config";
 const TUserSchema=new Schema<TUser,UserModel>({
     id:{type:String,required:[true,'User ID is Required'],unique:true},
     password:{type:String,required:[true,'Password is Required']},
+    email:{
+      type:String,
+      required:[true,'Email is Required'],
+      trim:true,
+      unique:true
+    },
     needPasswordChange:{type:Boolean,required:[true,'Need Password Change is Required'],default:true},
     passwordChangedAt:{type:Date,required:[false,'Password Chnage At is Required']},
     role:{

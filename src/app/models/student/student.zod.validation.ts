@@ -27,8 +27,10 @@ const TLocalGuardianSchema = z.object({
 
 // Zod validation schema for TStudent
 const TStudentValidaionSchema = z.object({
+
+
   body:z.object({
-  password:z.string().min(6).max(20),
+  password:z.string().min(6).max(20).optional(),
   student:z.object({
   name: TFullNameSchema,
   gender: z.enum(['male', 'female', 'other']),
@@ -39,7 +41,7 @@ const TStudentValidaionSchema = z.object({
   bloogGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),
   permanentAddress: z.string(),
   presentAddress: z.string(),
-  profileImg: z.string().url(),
+  //profileImg: z.string().url(),
   guardian: TGuardianSchema,
   localGuardian: TLocalGuardianSchema,
   admissionSemester:z.string(),

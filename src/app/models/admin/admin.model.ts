@@ -47,7 +47,7 @@ const TAdminSchema= new Schema<TAdmin>({
         trim:true,
         required:[true,'Designation is Required']
     },
-    gmail:{
+    email:{
         type:String,
         trim:true,
         unique:true,

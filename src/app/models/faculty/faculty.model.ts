@@ -22,7 +22,7 @@ const TFacultySchema= new Schema<TFaculty>({
     id:{type:String,required:[true,'Id is Required'],unique:true},
     user:{type:Schema.Types.ObjectId,required:[true,'User is Required'],ref:'USER'},
     name:{type:TFacultyName,required:[true,'Name is Required']},
-    gmail:{type:String,required:[true,'Gamil is Required']},
+    email:{type:String,required:[true,'Gamil is Required']},
     designation:{type:String,required:[true,'Designation is Required']},
     gender:{type:String,enum:{values:['Male', 'Female'],message:'{VALUE} is Not Required'},required:[true,'Gender is Required']},
     bloogGroup:{type:String,enum:{values:['A+' , 'A-' , 'B+' , 'B-' , 'AB+' , 'AB-' , 'O+' , 'O-'],message:'{VALUE} is Not Required'},required:[true,'BloodGroup is Required']},

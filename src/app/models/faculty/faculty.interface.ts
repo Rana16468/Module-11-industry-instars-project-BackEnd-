@@ -20,7 +20,7 @@ export type TFaculty={
     user:Types.ObjectId;
     name:TFacultyName;
     designation:string;
-    gmail:string;
+    email:string;
     gender:'Male' | 'Female',
     bloogGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
     dateOfBirth:string;
