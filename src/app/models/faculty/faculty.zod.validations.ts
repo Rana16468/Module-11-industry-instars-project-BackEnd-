@@ -33,7 +33,7 @@ const createTFacultySchema = z.object({
         permanentAddress: z.string().min(1),
         guirdian: TFacultyGuirdianSchema,
         academicDepartment: z.string().min(1),
-       profileImg: z.string().min(1)
+       //profileImg: z.string().min(1)
     })
   })
 });

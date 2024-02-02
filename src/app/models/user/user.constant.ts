@@ -4,5 +4,6 @@
 export const USER_ROLE={
     user:'user',
     faculty:'faculty',
-    admin:'admin'
+    admin:'admin',
+    superAdmin:'superAdmin'
 } as const ;

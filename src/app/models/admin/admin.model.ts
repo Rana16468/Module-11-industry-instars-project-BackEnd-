@@ -98,8 +98,8 @@ const TAdminSchema= new Schema<TAdmin>({
     },
     profileImg:{
         type:String,
-        trim:true,
-        required:[true,'Profile Image is Required']
+        required:[false,'Profile Image is Required'],
+        default:''
     },
     isDeleted:{
         type:Boolean,

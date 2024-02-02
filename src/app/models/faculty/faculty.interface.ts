@@ -29,7 +29,8 @@ export type TFaculty={
     presentAddress:string;
     permanentAddress:string;
     guirdian:TFacultyGuirdian;
-    academicDepartment:string;
+    academicDepartment:Types.ObjectId;
+    academicFaculty:Types.ObjectId;
     profileImg:string;
     isDeleted:boolean;
 

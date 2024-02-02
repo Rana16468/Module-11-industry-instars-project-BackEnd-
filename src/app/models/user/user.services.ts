@@ -13,28 +13,53 @@ import { Faculty } from '../faculty/faculty.model';
 import { Admin } from '../admin/admin.model';
 import { TAdmin } from '../admin/admin.interface';
 import { sendImageToCloudinary } from '../../utility/sendImageToCloudinary';
+import { AcademicDepartment } from '../academicDepartment/academicDepartment.model';
 
 
 
 
-const createFacultyIntoDb=async(password:string,payload:TFaculty)=>{
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const createFacultyIntoDb=async(password:string,payload:TFaculty,file:any)=>{
 
-  
     const userData:Partial<TUser>={};
     userData.password=password || (config.default_password);
     userData.role='faculty';
-    userData.email=payload?.email
+    userData.email=payload?.email;
+
+    // academic faculty Id Collected
+    const academicDepartment = await AcademicDepartment.findById(
+      payload.academicDepartment
+    );
+  
+    if (!academicDepartment) {
+      throw new AppError(400, 'Aademic department not found','');
+    }
+
+
+    if(file)
+    {
+
+      const imageName=`${userData.id}${payload.name.firstName.trim()}`;
+       const path=file?.path;
+       const  {secure_url}= await sendImageToCloudinary(imageName,path) 
+       payload.profileImg=secure_url as string
+    }
+
+    payload.academicFaculty=academicDepartment?.academicFaculty
+    
     const session=await mongoose.startSession();
     try{
         session.startTransaction();
 
         // generateFacultyId
         userData.id=await generateFaultyId();
+        
         const newFacultyUser=await USER.create([userData],{session});
         if(!newFacultyUser.length)
         {
             throw new AppError(httpStatus.BAD_REQUEST,'Faculty User createing Fuction Failed','');
         }
+        
         payload.user=newFacultyUser[0]._id;
         payload.id=newFacultyUser[0].id;
         
@@ -75,18 +100,37 @@ const createStudent= async(password:string,payload:TStudent,file:any)=>{
         //set Student Role
     userData.role='user';
     userData.email=payload?.email;
+
+       // find department
+ 
+   const academicDepartment = await AcademicDepartment.findById(
+    payload.academicDepartment,
+  );
+
+  if (!academicDepartment) {
+    throw new AppError(400, 'Aademic department not found','');
+  }
+   payload.academicFaculty=academicDepartment.academicFaculty;
      //set munality auto generated id
     userData.id= await generateUserId(admissionSemester);
 
 
     //send image to Cloudinary
-    const imageName=`${userData.id}${payload.name.firstName.trim()}`;
-    const path=file?.path;
+
+    if(file)
+    {
+
+      const imageName=`${userData.id}${payload.name.firstName.trim()}`;
+       const path=file?.path;
+       const  {secure_url}= await sendImageToCloudinary(imageName,path) 
+       payload.profileImg=secure_url as string
+    }
+    
     const session= await mongoose.startSession();
    try{
 
     session.startTransaction();
-    const  imageUrl= await sendImageToCloudinary(imageName,path);
+    
     
     const newUser=await USER.create([userData],{session})
     if(!newUser.length)
@@ -96,7 +140,7 @@ const createStudent= async(password:string,payload:TStudent,file:any)=>{
     }
     payload.user=newUser[0]._id;
     payload.id=newUser[0].id;
-    payload.profileImg=imageUrl?.secure_url;
+   
 
     // create Student 
     const newStudent=await Student.create([payload],{session});
@@ -120,7 +164,8 @@ const createStudent= async(password:string,payload:TStudent,file:any)=>{
 }
 
 
-const createAdminIntoDB = async (password: string, payload: TAdmin) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const createAdminIntoDB = async (password: string, payload: TAdmin,file:any) => {
 
   
 
@@ -133,6 +178,14 @@ const createAdminIntoDB = async (password: string, payload: TAdmin) => {
     userData.email=payload?.email;
       //set  generated id
     userData.id = await generateAdminId();
+    if(file)
+    {
+
+      const imageName=`${userData.id}${payload.name.firstName.trim()}`;
+       const path=file?.path;
+       const  {secure_url}= await sendImageToCloudinary(imageName,path) 
+       payload.profileImg=secure_url as string
+    }
 
 
     const session=await mongoose.startSession();

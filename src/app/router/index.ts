@@ -11,6 +11,7 @@ import { SemesterRegistrationRouter } from '../models/semesterRegistration/semes
 import { OfferedCourseRouter } from '../models/OfferedCourse/offeredCourse.router';
 import { AdminRouter } from '../models/admin/admin.router';
 import { AuthRouter } from '../models/auth/auth.router';
+import { EnrolledCourseRouter } from '../models/EnrollCourse/enrolledCourse.router';
 
 
 const router=express.Router();
@@ -27,7 +28,8 @@ const moduleRouth=[
     {path:'/course',route:CourseRouter},
     {path:'/semester-registration',route: SemesterRegistrationRouter},
     {path:'/offered-course',route:OfferedCourseRouter},
-    {path:'/auth',route:AuthRouter}
+    {path:'/auth',route:AuthRouter},
+    {path:'/enrolled-courses',route:EnrolledCourseRouter}
 ]
 
 moduleRouth.forEach((v)=>router.use(v.path,v.route))

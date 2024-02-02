@@ -19,14 +19,14 @@ const createUserController=catchAsyc(async(req:Request,res:Response)=>{
 
 
     const {password,faculty}=req.body;
-    const result=await UserService.createFacultyIntoDb(password,faculty);
+    const result=await UserService.createFacultyIntoDb(password,faculty,req.file);
     userRespones(res,{statusCode:httpStatus.OK,success:true,message:'Successfuly  Created Faculty',data:result})
  });
 
  const createAdmin:RequestHandler=catchAsyc(async(req,res)=>{
 
     const {password,admin}=req.body;
-    const result=await UserService.createAdminIntoDB(password,admin);
+    const result=await UserService.createAdminIntoDB(password,admin,req.file);
    userRespones(res,{statusCode:httpStatus.OK,success:true,message:'Successfully Admin Created',data:result});
   
   });

@@ -31,12 +31,13 @@ const createOfferedCourseIntoDb=async(payload:TOfferedCourse)=>{
         throw new AppError(httpStatus.NOT_FOUND,'Academic Faculty Id Not Founded','');
     }
     const isAcademicDepartmentExist=await AcademicDepartment.findById(academicDepartment);
+  
     if(!isAcademicDepartmentExist)
     {
         throw new AppError(httpStatus.NOT_FOUND,'Academic Department Id Not Founded','');
     }
-
     const isCourseExist=await Course.findById(course);
+  
     if(!isCourseExist)
     {
         throw new AppError(httpStatus.NOT_FOUND,'Course Id Not Founded','');
@@ -49,6 +50,7 @@ const createOfferedCourseIntoDb=async(payload:TOfferedCourse)=>{
     }
 
    //checked if the depertment is belong to the faculty 
+
    const isDepertmentBelogToFaculty=await AcademicDepartment.findOne({
 
     academicFaculty,

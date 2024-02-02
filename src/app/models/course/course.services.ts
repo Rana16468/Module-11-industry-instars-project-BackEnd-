@@ -92,7 +92,7 @@ const updateCourseFormDb=async(id:string,payload:Partial<TCourse>)=>{
 
 const createCourseFacultyIntoDb=async(id:string,payload:Partial<TCourseFaculty>)=>{
 
-   
+
       const result=await CourseFaculty.findByIdAndUpdate(id,{
         course:id,
         $addToSet:{facultys:{$each:payload}}

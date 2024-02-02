@@ -21,7 +21,7 @@ const TUserSchema=new Schema<TUser,UserModel>({
     role:{
         type:String,
         enum:{
-            values:['user', 'admin' ,'faculty'],
+            values:['user', 'admin' ,'faculty','superAdmin'],
             message:'{VALUE} is Not Required'
         },
         required:[true,'Role is Required']

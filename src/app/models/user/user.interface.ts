@@ -5,7 +5,7 @@ import { USER_ROLE } from "./user.constant";
 
 export type TUser={
     id:string;
-    role:'user' | 'admin' | 'faculty';
+    role:'user' | 'admin' | 'faculty' |'superAdmin';
     password:string;
     email:string,
     needPasswordChange:boolean;

@@ -72,7 +72,7 @@ const TFullNameSchema= new Schema<TUserName>({
      required:[true,'Blood Group is Required']},
      permanentAddress:{type:String,required:[true,'Permanent Address is Required']},
      presentAddress:{type:String,required:[true,'Present Address is Required']},
-     profileImg:{type:String,required:[true,'Profile Image is Required']},
+     profileImg:{type:String,required:[false,'Profile Image is Required'],default:''},
      guardian:{type:guardianSchema,required:[true,'Guardian is Required']},
      localGuardian:{type:localGuradianSchema,required:[true,'Local Guardian is Required']},
      admissionSemester:{type:Schema.Types.ObjectId,
@@ -82,6 +82,8 @@ const TFullNameSchema= new Schema<TUserName>({
         required:[true,'Academic Department is Required'],
         ref:'AcademicDepartment'
       },
+      academicFaculty:{type:Schema.Types.ObjectId,required:[true,'Academic Faculty is Required'],ref:""},
+
      isDeleted:{type:Boolean,required:[false,'Is Deleted is Optional But Important'],default:false}
 
  });
