@@ -191,10 +191,19 @@ const getSingleOfferedCourseFromDB = async (id: string) => {
     return result;
   };
 
+                      
+  const getMyOfferedCoursesFromDB=async(userId:string)=>{
+
+    return userId
+
+
+  }
+
 export const OfferedCourseServerice={
     createOfferedCourseIntoDb,
     updateOfferedCourseFromDb,
     getAllOfferedCoursesFromDB,
     getSingleOfferedCourseFromDB ,
-    deleteOfferedCourseFromDB
+    deleteOfferedCourseFromDB,
+    getMyOfferedCoursesFromDB
 }

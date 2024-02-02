@@ -45,10 +45,30 @@ const  deleteOfferedCourse:RequestHandler=catchAsyc(async(req,res)=>{
     userRespones(res,{success:true,statusCode:httpStatus.OK,message:'Delete Offered Course Successfuly',data:result})
 
 });
+
+const getMyOfferedCourses:RequestHandler=catchAsyc(async(req,res)=>{
+
+    const {userId}=req.user;
+   
+    const result=await OfferedCourseServerice. getMyOfferedCoursesFromDB(userId);
+    
+    userRespones(res, {
+     statusCode: httpStatus.OK,
+     success: true,
+     message: 'OfferedCourse fetched successfully',
+     data: result
+   });
+ 
+ 
+ 
+     
+   })
+
 export const OfferedCourseController={
     createOfferedCourse,
     updateOfferedCourse,
     getAllOfferedCourses,
     getSingleOfferedCourse,
-    deleteOfferedCourse
+    deleteOfferedCourse,
+    getMyOfferedCourses
 }
