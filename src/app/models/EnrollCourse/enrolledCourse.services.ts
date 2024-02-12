@@ -244,6 +244,7 @@ const updateEnrollmentCourseMarksIntoDb=async(facultyId:string,payload:Partial<T
     {
         
         const {classTest1,classTest2, midTerm,finalTerm}=isCourseBelongToFaculty.courseMarks;
+       
         const totalMarks=Math.ceil(classTest1)+ Math.ceil(classTest2) + Math.ceil(midTerm) + Math.ceil(finalTerm);
        const courseResult= calculateGradeEndPoints(totalMarks);
        mofiedData.grade=courseResult.grade;

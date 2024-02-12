@@ -1,14 +1,27 @@
 import { Response } from "express";
 
 
-const userRespones=<T>(res:Response,data:{
+
+type TMeta = {
+    limit: number;
+    page: number;
+    total: number;
+    totalPage: number;
+  };
+
+ type TResponeData<T>={
     statusCode:number;
     success:boolean;
     message:string;
-    data:T
-})=>{
+    meta?:TMeta ;
+    data:T;
+}
 
-    res.status(data.statusCode).json({success:data.success,message:data.message,data:data.data})
+
+
+const userRespones=<T>(res:Response,data:TResponeData<T>)=>{
+
+    res.status(data.statusCode).send({success:data.success,message:data.message,meta:data?.meta,data:data.data})
 
 }
 

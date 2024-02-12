@@ -9,6 +9,7 @@ import { Course } from "../course/course.model";
 import { Faculty } from "../faculty/faculty.model";
 import { hasTimeConflict } from "./offeredCourse.utilits";
 import QueryBuilder from "../../builder/QueryBuilder";
+import { Student } from "../student/student.model";
 
 
 
@@ -149,7 +150,10 @@ const getAllOfferedCoursesFromDB=async (query:Record<string,unknown>)=>{
     
     const semesterRegistrationQuery= new QueryBuilder(OfferedCourse.find(),query).filter().sort().pagination();
     const result=await semesterRegistrationQuery.modelQuery;
-    return result;
+    const meat=await semesterRegistrationQuery.countTotal();
+
+    
+    return {meat,result};
 
 }
 
@@ -194,7 +198,147 @@ const getSingleOfferedCourseFromDB = async (id: string) => {
                       
   const getMyOfferedCoursesFromDB=async(userId:string)=>{
 
-    return userId
+
+    // checking if exist the student or not 
+    const student=await Student.findOne({id:userId});
+    if(!student)
+    {
+      throw new AppError (httpStatus.NOT_FOUND,'User Not Exist in the database','');
+    }
+    // get current on going semester
+    const currentOnGoingRegistrationSemester=await SemesterRegistration.findOne({status:"ONGOING"});
+    if(!currentOnGoingRegistrationSemester)
+    {
+      throw new AppError (httpStatus.NOT_FOUND,'Current On Semester is not ONGOING','');
+    }
+    // match courses 
+    const result=await OfferedCourse.aggregate([
+
+      // satage 1
+      {
+        $match:{
+            semesterRegistration: currentOnGoingRegistrationSemester._id,
+            academicFaculty:student?.academicFaculty,
+            academicDepartment:student?.academicDepartment
+
+
+        }   
+    },
+    // statge 2
+    {
+        $lookup:{
+            from:"courses",
+            localField:"course",
+            foreignField:"_id",
+            as:"course"
+
+        }
+    },
+    // statge 3
+    {
+        $unwind:"$course"
+    },
+    // statge 4
+    {
+        $lookup:{
+            from:"enrolledcourses",
+            let: {
+                currentOngoingRegistrationSemester:
+                  currentOnGoingRegistrationSemester._id,
+                  currentStudent: student._id,
+                
+              },
+            pipeline:[
+                {
+                    $match:{
+                        $expr:{
+                            $and:[
+                               {$eq:['$semesterRegistration','$$currentOngoingRegistrationSemester']},
+                               {$eq:['$student','$$currentStudent']},
+                               {$eq:['$isEnrolled',true]}
+                            ]
+                        }
+                    }
+                }
+            ],
+            as: 'enrolledcourses'
+        }
+    },
+    // statge 5
+    {
+      $lookup:{
+        from:"enrolledcourses",
+        let: {
+            
+          currentStudent: student._id
+          },
+        pipeline:[
+            {
+                $match:{
+                    $expr:{
+                        $and:[
+                         { $eq:['$student',"$$currentStudent"]},
+                         { $eq:['$isCompleted',true]}
+                          
+                        ]
+                    }
+                }
+            }
+        ],
+        as: 'completedCourses'
+    }
+    },
+    // statge 6
+    {
+       $addFields:{
+        completedCourseIds:{
+          $map:{
+            input:"$completedCourses",
+            as:"completed",
+            in:"$$completed.course"
+
+          }
+        }
+
+       }
+    },
+    // statge 7
+    {
+      $addFields:{
+        isPreRequisiteFullFilled:{
+          $or:[
+            {$eq:["$course.preRequisiteCourses",[]]},
+            //https://www.mongodb.com/docs/manual/reference/operator/aggregation/setIsSubset/
+            {$setIsSubset:[
+              '$course.preRequisiteCourses.course',
+              '$completedCourseIds'
+            ]}
+          ]
+
+        },
+        isAlreadyEnrolled:{
+          $in:['$course._id',{
+             $map:{
+                 input:"$enrolledcourses",
+                 as:"enroll",
+                 in:"$$enroll.course"
+
+             }
+         }]
+        }
+    
+      }
+  },
+  // statge 8
+  {
+    $match:{
+      isAlreadyEnrolled:false,
+      isPreRequisiteFullFilled:true
+    }
+  }
+    ])
+
+    return result
 
 
   }
