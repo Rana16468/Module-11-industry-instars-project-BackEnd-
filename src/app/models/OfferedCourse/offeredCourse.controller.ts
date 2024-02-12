@@ -17,7 +17,7 @@ const  getAllOfferedCourses:RequestHandler=catchAsyc(async(req,res)=>{
 
     const result=await OfferedCourseServerice.getAllOfferedCoursesFromDB(req.query);
 
- userRespones(res,{success:true,statusCode:httpStatus.OK,message:'All Offered Course Successfully Rectrive ',data:result})
+ userRespones(res,{success:true,statusCode:httpStatus.OK,message:'All Offered Course Successfully Rectrive ',meta:result?.meat, data:result.result})
 
 
 });
